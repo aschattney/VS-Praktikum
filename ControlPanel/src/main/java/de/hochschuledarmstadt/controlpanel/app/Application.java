@@ -5,11 +5,15 @@
  */
 package de.hochschuledarmstadt.controlpanel.app;
 
+import com.sun.net.httpserver.HttpServer;
 import de.hochschuledarmstadt.client.ISocketClient;
 import de.hochschuledarmstadt.client.SocketClientFactory;
 import de.hochschuledarmstadt.config.Credential;
 import de.hochschuledarmstadt.config.CredentialParser;
+import org.glassfish.jersey.server.ResourceConfig;
 
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
 import java.util.concurrent.Executors;
 
 public class Application {
@@ -39,6 +43,9 @@ public class Application {
         UserInputProcessor userInputProcessor = new UserInputProcessor(System.in, System.out, printJobExecutor, materialClient);
         printJobExecutor.setCallback(userInputProcessor);
         userInputProcessor.processSync();
+
+        URI baseUri = UriBuilder.fromUri("http://localhost(").port(1111).build();
+        ResourceConfig config = new ResourceConfig(MyResource.class); // interner aufbau vom rest-server
 
     }
 

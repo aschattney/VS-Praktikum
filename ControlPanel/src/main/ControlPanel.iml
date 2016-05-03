@@ -10,5 +10,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="SocketTransport" />
+    <orderEntry type="library" name="jersey-server" level="project" />
   </component>
 </module>
