@@ -10,6 +10,7 @@ import de.hochschuledarmstadt.client.ISocketClient;
 import de.hochschuledarmstadt.client.SocketClientFactory;
 import de.hochschuledarmstadt.config.Credential;
 import de.hochschuledarmstadt.config.CredentialParser;
+import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import javax.ws.rs.core.UriBuilder;
@@ -42,10 +43,13 @@ public class Application {
         // Transforms user input into message requests and sends those requests to the server
         UserInputProcessor userInputProcessor = new UserInputProcessor(System.in, System.out, printJobExecutor, materialClient);
         printJobExecutor.setCallback(userInputProcessor);
-        userInputProcessor.processSync();
+        //userInputProcessor.processSync();
 
-        URI baseUri = UriBuilder.fromUri("http://localhost(").port(1111).build();
-        ResourceConfig config = new ResourceConfig(MyResource.class); // interner aufbau vom rest-server
+        URI baseUri = UriBuilder.fromUri("http://localhost/").port(1111).build();
+        PrinterResource printerResource = new PrinterResource(printerClient);
+        MaterialResource materialResource = new MaterialResource(materialClient);
+        ResourceConfig config = new ResourceConfig().register(printerResource).register(materialResource); // interner aufbau vom rest-server
+        HttpServer server = JdkHttpServerFactory.createHttpServer(baseUri, config);
 
     }
 

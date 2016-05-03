@@ -42,8 +42,17 @@ public class MessageConsumer implements IMaterialConsumer {
             UseColorResponse response = new UseColorResponse(UseColorResponse.STATUS_OK);
             sendMessage(messageSender, response.toJSON());
 
+        }else if(isMaterialStatusRequest(message)){
+
+            RequiredMaterial currentFillLevel = material.getColorFillLevel();
+            MaterialStatusResponse materialStatusResponse = new MaterialStatusResponse(currentFillLevel);
+            sendMessage(messageSender, materialStatusResponse.toJSON());
         }
 
+    }
+
+    private boolean isMaterialStatusRequest(JSONObject message) {
+        return message.getString(KEY_TYPE).equals(MaterialStatusRequest.MATERIAL_STATUS_REQUEST);
     }
 
     private boolean isUseColorRequest(JSONObject message) {

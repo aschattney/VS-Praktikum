@@ -2,6 +2,7 @@ package de.schattney.app;
 
 import de.hochschuledarmstadt.component.IMessageSender;
 import de.hochschuledarmstadt.model.request.PrintHeadCommandRequest;
+import de.hochschuledarmstadt.model.request.PrintheadStatusRequest;
 import de.hochschuledarmstadt.model.response.*;
 import org.json.JSONObject;
 
@@ -25,7 +26,16 @@ public class MessageConsumer implements IPrintheadConsumer {
                 PrintHeadCommandResponse response = new PrintHeadCommandResponse(printHeadStatus);
                 sendMessage(messageSender, response.toJSON());
             }
+        }else if(isPrintHeadStatusRequest(jsonObject)){
+            synchronized (printHeadStatus){
+                PrintHeadStatusResponse response = new PrintHeadStatusResponse(printHeadStatus);
+                sendMessage(messageSender, response.toJSON());
+            }
         }
+    }
+
+    private boolean isPrintHeadStatusRequest(JSONObject jsonObject) {
+        return jsonObject.getString(KEY_TYPE).equals(PrintheadStatusRequest.PRINTHEAD_STATUS_REQUEST);
     }
 
     private boolean isPrintHeadCommandRequest(JSONObject jsonObject) {

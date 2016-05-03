@@ -10,6 +10,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="SocketTransport" />
-    <orderEntry type="library" name="jersey-server" level="project" />
+    <orderEntry type="library" name="org.glassfish.jersey.containers:jersey-container-jdk-http:2.3.1" level="project" />
   </component>
 </module>
